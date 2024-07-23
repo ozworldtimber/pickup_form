@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pick Up Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #000;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .info,
+        .details,
+        .note {
+            margin-bottom: 20px;
+        }
+
+        .info table,
+        .details table,
+        .note table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info td,
+        .details td,
+        .note td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .details td input,
+        .info td input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .note {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="header">
+            <h1>Pick Up Form</h1>
+        </div>
+        <div class="info">
+            <table>
+                <tr>
+                    <td>
+                        Ozworld Timber Flooring<br>
+                        ADD: 45 Winterton Road, Clayton VIC 3168<br>
+                        T: 03 9544 9709<br>
+                        E: info@ozworld.com.au
+                    </td>
+                    <td>
+                        <div>
+                            <input type="checkbox" id="pick_up">
+                            <label for="pick_up">pickup</label><br>
+
+                            <input type="checkbox" id="return">
+                            <label for="retun">return</label><br>
+
+                            <input type="checkbox" id="others">
+                            <label for="others">others</label><br>
+
+                        </div>
+
+                    </td>
+                    <td>
+                        Date: <input type="date" name="date"><br>
+                        Time: <input type="time" name="time">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Shipping Address (If Applicable)</td>
+                    <td colspan="4"><input type="text" name="shipping_address"></td>
+                </tr>
+
+                <tr>
+                    <td>Customer Name</td>
+                    <td><input type="text" name="customer_name"></td>
+                    <td>Handler By (Print Name)</td>
+                    <td><input type="text" name="handler"></td>
+                </tr>
+                <tr>
+                    <td>Invoice No.</td>
+                    <td><input type="text" name="invoice_no"></td>
+                    <td>Vehicle Plate No.</td>
+                    <td><input type="text" name="vehicle_plate_no"></td>
+                </tr>
+                <tr>
+                    <td>Job Ref</td>
+                    <td><input type="text" name="job_ref"></td>
+                    <td>ETA</td>
+                    <td><input type="text" name="eta"></td>
+                </tr>
+                <tr>
+
+                </tr>
+                <tr>
+                    <td>Received by:</td>
+                    <td>
+                        <input type="checkbox" name="oz_courier"> Oz Courier<br>
+                        <input type="checkbox" name="installer"> Installer<br>
+                        <input type="checkbox" name="customer"> Customer<br>
+
+                    </td>
+
+                    <td>
+                        <div>
+                            <p>Please sign on the dotted line below.</p>
+                            <iframe src=signature.svg></iframe>
+                            <div>
+                                <button onclick=showSignature()>Show signaure path data</button>
+                                <button onclick=clearSignature()>Clear signature</button>
+                                <div id=pathdata></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="details">
+            <table>
+                <tr>
+                    <td>Order</td>
+                    <td>Product Code</td>
+                    <td>Specs</td>
+                    <td>Pack Size</td>
+                    <td>Pack Qty</td>
+                    <td>Total M2</td>
+                    <td>Remark</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" name="product_code_1"></td>
+                    <td><input type="text" name="specs_1"></td>
+                    <td><input type="text" name="pack_size_1"></td>
+                    <td><input type="text" name="pack_qty_1"></td>
+                    <td><input type="text" name="total_m2_1"></td>
+                    <td><input type="text" name="remark_1"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" name="product_code_2"></td>
+                    <td><input type="text" name="specs_2"></td>
+                    <td><input type="text" name="pack_size_2"></td>
+                    <td><input type="text" name="pack_qty_2"></td>
+                    <td><input type="text" name="total_m2_2"></td>
+                    <td><input type="text" name="remark_2"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" name="product_code_3"></td>
+                    <td><input type="text" name="specs_3"></td>
+                    <td><input type="text" name="pack_size_3"></td>
+                    <td><input type="text" name="pack_qty_3"></td>
+                    <td><input type="text" name="total_m2_3"></td>
+                    <td><input type="text" name="remark_3"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="text" name="product_code_4"></td>
+                    <td><input type="text" name="specs_4"></td>
+                    <td><input type="text" name="pack_size_4"></td>
+                    <td><input type="text" name="pack_qty_4"></td>
+                    <td><input type="text" name="total_m2_4"></td>
+                    <td><input type="text" name="remark_4"></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input type="text" name="product_code_5"></td>
+                    <td><input type="text" name="specs_5"></td>
+                    <td><input type="text" name="pack_size_5"></td>
+                    <td><input type="text" name="pack_qty_5"></td>
+                    <td><input type="text" name="total_m2_5"></td>
+                    <td><input type="text" name="remark_5"></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><input type="text" name="product_code_6"></td>
+                    <td><input type="text" name="specs_6"></td>
+                    <td><input type="text" name="pack_size_6"></td>
+                    <td><input type="text" name="pack_qty_6"></td>
+                    <td><input type="text" name="total_m2_6"></td>
+                    <td><input type="text" name="remark_6"></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><input type="text" name="product_code_7"></td>
+                    <td><input type="text" name="specs_7"></td>
+                    <td><input type="text" name="pack_size_7"></td>
+                    <td><input type="text" name="pack_qty_7"></td>
+                    <td><input type="text" name="total_m2_7"></td>
+                    <td><input type="text" name="remark_7"></td>
+                </tr>
+                <tr>
+                    <td>Grand Total:</td>
+                    <td colspan="6"><input type="text" name="grand_total"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="note">
+            <table>
+                <tr>
+                    <td>Note:</td>
+                    <td>
+                        <input type="checkbox" name="pick_up"> Stock adjustment <input type="date" name="date"><br>
+                        <input type="checkbox" name="return"> Invoice/Credit note issue <input type="text"
+                            name="grand_total">
+
+                    </td>
+                    <td>PUF210 <input type="number" name="grand_total"></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <div><button onClick="window.print()">Print this page
+            </button></div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    var svg = document.getElementsByTagName('iframe')[0].contentWindow;
+    var pathdata = document.getElementById('pathdata');
+
+    function showSignature() {
+        pathdata.textContent = svg.getSignature();
+    }
+
+    function clearSignature() {
+        svg.clearSignature();
+        pathdata.textContent = '';
+    }
+</script>
