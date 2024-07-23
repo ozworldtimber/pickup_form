@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details td, .details th {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .details button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="details">
+    <table id="order-table">
+        <tr>
+            <th>Order</th>
+            <th>Product Code</th>
+            <th>Specs</th>
+            <th>Pack Size</th>
+            <th>Pack Qty</th>
+            <th>Total M2</th>
+            <th>Remark</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><input type="text" name="product_code_1"></td>
+            <td><input type="text" name="specs_1"></td>
+            <td><input type="text" name="pack_size_1"></td>
+            <td><input type="text" name="pack_qty_1"></td>
+            <td><input type="text" name="total_m2_1"></td>
+            <td><input type="text" name="remark_1"></td>
+            <td><button type="button" class="delete-row">Delete</button></td>
+        </tr>
+        <tr>
+            <td>Grand Total:</td>
+            <td colspan="7"><input type="text" name="grand_total"></td>
+        </tr>
+    </table>
+    <button type="button" id="add-item">Add Item</button>
+</div>
+
+<script>
+document.getElementById('add-item').addEventListener('click', function() {
+    const table = document.getElementById('order-table');
+    const rowCount = table.rows.length;
+    const newRow = table.insertRow(rowCount - 1);
+
+    newRow.innerHTML = `
+        <td>${rowCount - 1}</td>
+        <td><input type="text" name="product_code_${rowCount - 1}"></td>
+        <td><input type="text" name="specs_${rowCount - 1}"></td>
+        <td><input type="text" name="pack_size_${rowCount - 1}"></td>
+        <td><input type="text" name="pack_qty_${rowCount - 1}"></td>
+        <td><input type="text" name="total_m2_${rowCount - 1}"></td>
+        <td><input type="text" name="remark_${rowCount - 1}"></td>
+        <td><button type="button" class="delete-row">Delete</button></td>
+    `;
+
+    attachDeleteEvent(newRow.querySelector('.delete-row'));
+});
+
+function attachDeleteEvent(button) {
+    button.addEventListener('click', function() {
+        const row = this.closest('tr');
+        row.remove();
+        updateOrderNumbers();
+    });
+}
+
+document.querySelectorAll('.delete-row').forEach(button => {
+    attachDeleteEvent(button);
+});
+
+function updateOrderNumbers() {
+    const rows = document.querySelectorAll('#order-table tr');
+    rows.forEach((row, index) => {
+        if (index > 0 && index < rows.length - 1) {
+            row.cells[0].textContent = index;
+        }
+    });
+}
+</script>
+
+</body>
+</html>
