@@ -7,6 +7,7 @@
     <title>Pick Up Form</title>
     <link rel="stylesheet" href="style.css">
     <!-- <script src="script.js"></script> -->
+    
 
 </head>
 
@@ -133,6 +134,7 @@
                 <button id="take-photo-btn">Take Photo</button>
                 <input type="file" accept="image/*" capture="environment" id="photo-input" style="display:none;"
                     multiple />
+                
                 <div class="photo-container" id="photo-container"></div>
             </div>
         </div>
@@ -152,8 +154,11 @@
             </table>
         </div>
         <div>
-            <div><button onClick="window.print()">Print this page
-                </button></div>
+            <div>
+                <button onClick="window.print()">Print this page
+                </button>
+            </div>
+            
         </div>
     </div>
 
@@ -161,6 +166,7 @@
 
 </html>
 <script>
+    
     // script to get signature
     var svg = document.getElementsByTagName('iframe')[0].contentWindow;
     var pathdata = document.getElementById('pathdata');
