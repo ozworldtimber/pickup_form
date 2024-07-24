@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- <script src="script.js"></script> -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 
 </head>
 
@@ -111,14 +113,15 @@
                     </td>
 
                     <td>
-                        <div>
+                        <div class="signature-container">
                             <p>Please sign on the dotted line below.</p>
                             <iframe src=signature.svg></iframe>
                             <div>
-                                <button onclick=showSignature()>Show signaure path data</button>
                                 <button onclick=clearSignature()>Clear signature</button>
                                 <div id=pathdata></div>
                             </div>
+
+                            
                         </div>
                     </td>
                 </tr>
@@ -187,8 +190,9 @@
         </div>
         <div>
             <div>
-                <button onClick="window.print()">Print this page
-                </button>
+                <button onClick="window.print()">Print this page</button>
+
+                <button id="saveScreenshot"> save page screenshot</button>
             </div>
 
         </div>
@@ -198,14 +202,28 @@
 
 </html>
 <script>
+    
+    // save screenshot
+    document.getElementById('saveScreenshot').addEventListener('click', () => {
+        // Capture the page content
+        html2canvas(document.body).then(canvas => {
+            // Convert canvas to data URL (PNG format)
+            const screenshotDataUrl = canvas.toDataURL('image/png');
+
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = screenshotDataUrl;
+            link.download = 'screenshot.png';
+            link.click();
+        });
+    });
+
 
     // script to get signature
     var svg = document.getElementsByTagName('iframe')[0].contentWindow;
     var pathdata = document.getElementById('pathdata');
 
-    function showSignature() {
-        pathdata.textContent = svg.getSignature();
-    }
+    
 
     function clearSignature() {
         svg.clearSignature();
@@ -213,55 +231,55 @@
     }
 
 
-    
+
 
     // Function to handle file input changes
-function handleFileInputChange(event) {
-    const files = event.target.files;
-    const photoContainer = document.getElementById('photo-container');
+    function handleFileInputChange(event) {
+        const files = event.target.files;
+        const photoContainer = document.getElementById('photo-container');
 
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
 
-        reader.onload = function (e) {
-            const photoPreview = document.createElement('div');
-            photoPreview.classList.add('photo-preview');
+            reader.onload = function (e) {
+                const photoPreview = document.createElement('div');
+                photoPreview.classList.add('photo-preview');
 
-            const photo = document.createElement('img');
-            photo.src = e.target.result;
-            photo.alt = 'Delivery Picture';
+                const photo = document.createElement('img');
+                photo.src = e.target.result;
+                photo.alt = 'Delivery Picture';
 
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'X'; // Changed to 'X' for visual clarity
-            deleteButton.addEventListener('click', function () {
-                photoPreview.remove();
-            });
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'X'; // Changed to 'X' for visual clarity
+                deleteButton.addEventListener('click', function () {
+                    photoPreview.remove();
+                });
 
-            photoPreview.appendChild(photo);
-            photoPreview.appendChild(deleteButton);
-            photoContainer.appendChild(photoPreview);
-        };
+                photoPreview.appendChild(photo);
+                photoPreview.appendChild(deleteButton);
+                photoContainer.appendChild(photoPreview);
+            };
 
-        reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
+        }
     }
-}
 
-// Event listener for the "Take Photo" button
-document.getElementById('take-photo-btn').addEventListener('click', function () {
-    document.getElementById('photo-input').click();
-});
+    // Event listener for the "Take Photo" button
+    document.getElementById('take-photo-btn').addEventListener('click', function () {
+        document.getElementById('photo-input').click();
+    });
 
-// Event listener for the "Upload Photo" button
-document.getElementById('upload-photo-btn').addEventListener('click', function () {
-    document.getElementById('upload-photo-input').click();
-});
+    // Event listener for the "Upload Photo" button
+    document.getElementById('upload-photo-btn').addEventListener('click', function () {
+        document.getElementById('upload-photo-input').click();
+    });
 
-// Event listener for the file input used for taking photos
-document.getElementById('photo-input').addEventListener('change', handleFileInputChange);
+    // Event listener for the file input used for taking photos
+    document.getElementById('photo-input').addEventListener('change', handleFileInputChange);
 
-// Event listener for the file input used for uploading photos
-document.getElementById('upload-photo-input').addEventListener('change', handleFileInputChange);
+    // Event listener for the file input used for uploading photos
+    document.getElementById('upload-photo-input').addEventListener('change', handleFileInputChange);
 
 
 
