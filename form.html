@@ -7,9 +7,10 @@
     <title>Pick Up Form</title>
     <link rel="stylesheet" href="style.css">
     <!-- <script src="script.js"></script> -->
-    
+
 
 </head>
+
 
 <body>
 
@@ -17,6 +18,7 @@
     <div class="container">
         <div class="header">
             <h1>Pick Up Form</h1>
+            <img src="icon.png" alt="Icon">
         </div>
         <div class="info">
             <table>
@@ -27,24 +29,36 @@
                         04 7569 2231<br>
                         info@ozworld.com.au
                     </td>
+
                     <td>
-                        <div>
-                            <input type="checkbox" id="pick_up">
-                            <label for="pick_up">pickup</label><br>
 
-                            <input type="checkbox" id="return">
-                            <label for="retun">return</label><br>
+                        <div class="checkbox-container">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pick_up">
+                                <label for="pick_up">Pickup</label>
+                            </div>
 
-                            <input type="checkbox" id="others">
-                            <label for="others">others</label><br>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="return">
+                                <label for="return">Return</label>
+                            </div>
 
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="others">
+                                <label for="others">Others: </label>
+                            </div>
                         </div>
 
+
+
+                        <div class="date-time-container">
+                            <p>Date:</p> <input type="date" name="date">
+                            <p>Time: </p><input type="time" name="time">
+                        </div>
                     </td>
-                    <td>
-                        Date: <input type="date" name="date"><br>
-                        Time: <input type="time" name="time">
-                    </td>
+
+
+
                 </tr>
                 <tr>
                     <td>Shipping Address (If Applicable)</td>
@@ -52,32 +66,47 @@
                 </tr>
 
                 <tr>
-                    <td>Customer Name</td>
-                    <td><input type="text" name="customer_name"></td>
-                    <td>Handler By (Print Name)</td>
-                    <td><input type="text" name="handler"></td>
-                </tr>
-                <tr>
-                    <td>Invoice No.</td>
-                    <td><input type="text" name="invoice_no"></td>
-                    <td>Vehicle Plate No.</td>
-                    <td><input type="text" name="vehicle_plate_no"></td>
-                </tr>
-                <tr>
-                    <td>Job Ref</td>
-                    <td><input type="text" name="job_ref"></td>
-                    <td>ETA</td>
-                    <td><input type="text" name="eta"></td>
-                </tr>
-                <tr>
+                    <td>Customer Name<br><input type="text" name="customer_name"></td>
+                    <td>Handler By (Print Name)<br><input type="text" name="handler"></td>
+
 
                 </tr>
+
                 <tr>
-                    <td>Received by:</td>
+                    <td>Invoice No.<br><input type="text" name="invoice_no"></td>
+                    <td>ETA<br><input type="text" name="eta"></td>
+                </tr>
+
+                <tr>
+                    <td>Vehicle Plate No.<br><input type="text" name="vehicle_plate_no"></td>
+                    <td>Job Ref<br><input type="text" name="job_ref"></td>
+
+
+                </tr>
+
+
+                <tr>
                     <td>
-                        <input type="checkbox" name="oz_courier"> Oz Courier<br>
-                        <input type="checkbox" name="installer"> Installer<br>
-                        <input type="checkbox" name="customer"> Customer<br>
+
+
+                        <div class="checkbox-container">
+                            <p>Received by:</p><br>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="oz_courier" id="oz_courier">
+                                <label for="oz_courier">Courier</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="installer" id="installer">
+                                <label for="installer">Installer</label>
+                            </div>
+
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="customer" id="customer">
+                                <label for="customer">Customer</label>
+                            </div>
+                        </div>
 
                     </td>
 
@@ -134,7 +163,9 @@
                 <button id="take-photo-btn">Take Photo</button>
                 <input type="file" accept="image/*" capture="environment" id="photo-input" style="display:none;"
                     multiple />
-                
+
+                <button id="upload-photo-btn">Upload Photo</button>
+
                 <div class="photo-container" id="photo-container"></div>
             </div>
         </div>
@@ -158,7 +189,7 @@
                 <button onClick="window.print()">Print this page
                 </button>
             </div>
-            
+
         </div>
     </div>
 
@@ -166,7 +197,7 @@
 
 </html>
 <script>
-    
+
     // script to get signature
     var svg = document.getElementsByTagName('iframe')[0].contentWindow;
     var pathdata = document.getElementById('pathdata');
@@ -180,8 +211,13 @@
         pathdata.textContent = '';
     }
 
-    // script to take picture
+    // script to take photo
     document.getElementById('take-photo-btn').addEventListener('click', function () {
+        document.getElementById('photo-input').click();
+    });
+
+    // script to upload photo
+    document.getElementById('upload-photo-btn').addEventListener('click', function () {
         document.getElementById('photo-input').click();
     });
 
@@ -216,7 +252,7 @@
         }
     });
 
-    // script to modify details
+    // script to modify order item details
     document.getElementById('add-item').addEventListener('click', function () {
         const table = document.getElementById('order-table');
         const rowCount = table.rows.length;
