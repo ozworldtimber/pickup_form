@@ -121,6 +121,7 @@
                                 <div id=pathdata></div>
                             </div>
 
+
                             
                         </div>
                     </td>
@@ -132,30 +133,34 @@
 
         <div class="details">
             <table id="order-table">
-                <tr>
-                    <th>Order</th>
-                    <th>Product Code</th>
-                    <th>Specs</th>
-                    <th>Pack Size</th>
-                    <th>Pack Qty</th>
-                    <th>Total M2</th>
-                    <th>Remark</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><input type="text" name="product_code_1"></td>
-                    <td><input type="text" name="specs_1"></td>
-                    <td><input type="text" name="pack_size_1"></td>
-                    <td><input type="text" name="pack_qty_1"></td>
-                    <td><input type="text" name="total_m2_1"></td>
-                    <td><input type="text" name="remark_1"></td>
-                    <td><button type="button" class="delete-row">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>Grand Total:</td>
-                    <td colspan="7"><input type="text" name="grand_total"></td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Product Code</th>
+                        <th>Specs</th>
+                        <th>Pack Size M2</th>
+                        <th>Pack Qty</th>
+                        <th>Total M2</th>
+                        <th>Remark</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="text" name="product_code_1"></td>
+                        <td><input type="text" name="specs_1"></td>
+                        <td><input type="number" name="pack_size_1" class="pack-size"></td>
+                        <td><input type="number" name="pack_qty_1" class="pack-qty"></td>
+                        <td><input type="text" name="total_m2_1" class="total-m2" readonly></td>
+                        <td><input type="text" name="remark_1"></td>
+                        <td><button type="button" class="delete-row">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>Grand Total:</td>
+                        <td colspan="7"><input type="text" name="grand_total" id="grand-total" readonly></td>
+                    </tr>
+                </tbody>
             </table>
             <button type="button" id="add-item">Add Item</button>
         </div>
@@ -287,44 +292,56 @@
 
     // script to modify order item details
     document.getElementById('add-item').addEventListener('click', function () {
-        const table = document.getElementById('order-table');
-        const rowCount = table.rows.length;
-        const newRow = table.insertRow(rowCount - 1);
+            const table = document.getElementById('order-table').querySelector('tbody');
+            const rowCount = table.rows.length - 1; // excluding grand total row
+            const newRow = table.insertRow(rowCount);
 
-        newRow.innerHTML = `
-        <td>${rowCount - 1}</td>
-        <td><input type="text" name="product_code_${rowCount - 1}"></td>
-        <td><input type="text" name="specs_${rowCount - 1}"></td>
-        <td><input type="text" name="pack_size_${rowCount - 1}"></td>
-        <td><input type="text" name="pack_qty_${rowCount - 1}"></td>
-        <td><input type="text" name="total_m2_${rowCount - 1}"></td>
-        <td><input type="text" name="remark_${rowCount - 1}"></td>
-        <td><button type="button" class="delete-row">Delete</button></td>
-    `;
+            newRow.innerHTML = `
+            <td>${rowCount+1}</td>
+            <td><input type="text" name="product_code_${rowCount}"></td>
+            <td><input type="text" name="specs_${rowCount}"></td>
+            <td><input type="number" name="pack_size_${rowCount}" class="pack-size"></td>
+            <td><input type="number" name="pack_qty_${rowCount}" class="pack-qty"></td>
+            <td><input type="text" name="total_m2_${rowCount}" class="total-m2" readonly></td>
+            <td><input type="text" name="remark_${rowCount}"></td>
+            <td><button type="button" class="delete-row">Delete</button></td>
+            `;
 
-        attachDeleteEvent(newRow.querySelector('.delete-row'));
-    });
+            attachEvents(newRow);
+        });
 
-    function attachDeleteEvent(button) {
-        button.addEventListener('click', function () {
+        function attachEvents(row) {
+            row.querySelector('.delete-row').addEventListener('click', function () {
+                row.remove();
+                updateGrandTotal();
+            });
+
+            row.querySelector('.pack-size').addEventListener('input', updateRowTotal);
+            row.querySelector('.pack-qty').addEventListener('input', updateRowTotal);
+        }
+
+        function updateRowTotal() {
             const row = this.closest('tr');
-            row.remove();
-            updateOrderNumbers();
-        });
-    }
+            const packSize = parseFloat(row.querySelector('.pack-size').value) || 0;
+            const packQty = parseFloat(row.querySelector('.pack-qty').value) || 0;
+            const totalM2 = packSize * packQty;
+            row.querySelector('.total-m2').value = totalM2.toFixed(3);
+            updateGrandTotal();
+        }
 
-    document.querySelectorAll('.delete-row').forEach(button => {
-        attachDeleteEvent(button);
-    });
+        function updateGrandTotal() {
+            const totalM2Fields = document.querySelectorAll('.total-m2');
+            let grandTotal = 0;
+            totalM2Fields.forEach(field => {
+                grandTotal += parseFloat(field.value) || 0;
+            });
+            document.getElementById('grand-total').value = grandTotal.toFixed(3);
+        }
 
-    function updateOrderNumbers() {
-        const rows = document.querySelectorAll('#order-table tr');
-        rows.forEach((row, index) => {
-            if (index > 0 && index < rows.length - 1) {
-                row.cells[0].textContent = index;
-            }
+        // Attach events to existing rows
+        document.querySelectorAll('#order-table tbody tr').forEach(row => {
+            attachEvents(row);
         });
-    }
 
 
 
