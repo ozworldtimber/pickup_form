@@ -165,6 +165,7 @@
                     multiple />
 
                 <button id="upload-photo-btn">Upload Photo</button>
+                <input type="file" accept="image/*" id="upload-photo-input" style="display:none;" multiple />
 
                 <div class="photo-container" id="photo-container"></div>
             </div>
@@ -211,46 +212,60 @@
         pathdata.textContent = '';
     }
 
-    // script to take photo
-    document.getElementById('take-photo-btn').addEventListener('click', function () {
-        document.getElementById('photo-input').click();
-    });
 
-    // script to upload photo
-    document.getElementById('upload-photo-btn').addEventListener('click', function () {
-        document.getElementById('photo-input').click();
-    });
+    
 
-    document.getElementById('photo-input').addEventListener('change', function (event) {
-        const files = event.target.files;
-        const photoContainer = document.getElementById('photo-container');
+    // Function to handle file input changes
+function handleFileInputChange(event) {
+    const files = event.target.files;
+    const photoContainer = document.getElementById('photo-container');
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
 
-            reader.onload = function (e) {
-                const photoPreview = document.createElement('div');
-                photoPreview.classList.add('photo-preview');
+        reader.onload = function (e) {
+            const photoPreview = document.createElement('div');
+            photoPreview.classList.add('photo-preview');
 
-                const photo = document.createElement('img');
-                photo.src = e.target.result;
-                photo.alt = 'Delivery Picture';
+            const photo = document.createElement('img');
+            photo.src = e.target.result;
+            photo.alt = 'Delivery Picture';
 
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.addEventListener('click', function () {
-                    photoPreview.remove();
-                });
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'X'; // Changed to 'X' for visual clarity
+            deleteButton.addEventListener('click', function () {
+                photoPreview.remove();
+            });
 
-                photoPreview.appendChild(photo);
-                photoPreview.appendChild(deleteButton);
-                photoContainer.appendChild(photoPreview);
-            };
+            photoPreview.appendChild(photo);
+            photoPreview.appendChild(deleteButton);
+            photoContainer.appendChild(photoPreview);
+        };
 
-            reader.readAsDataURL(file);
-        }
-    });
+        reader.readAsDataURL(file);
+    }
+}
+
+// Event listener for the "Take Photo" button
+document.getElementById('take-photo-btn').addEventListener('click', function () {
+    document.getElementById('photo-input').click();
+});
+
+// Event listener for the "Upload Photo" button
+document.getElementById('upload-photo-btn').addEventListener('click', function () {
+    document.getElementById('upload-photo-input').click();
+});
+
+// Event listener for the file input used for taking photos
+document.getElementById('photo-input').addEventListener('change', handleFileInputChange);
+
+// Event listener for the file input used for uploading photos
+document.getElementById('upload-photo-input').addEventListener('change', handleFileInputChange);
+
+
+
+
 
     // script to modify order item details
     document.getElementById('add-item').addEventListener('click', function () {
